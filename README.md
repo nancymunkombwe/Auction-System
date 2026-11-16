@@ -5,13 +5,16 @@
 
 ### Discover. Bid. Win.
 
-A modern online auction marketplace designed for Zambia.
+A modern, full-stack online auction marketplace designed for Zambia.
 
 ![PHP](https://img.shields.io/badge/PHP-8.2-777BB4?style=for-the-badge&logo=php&logoColor=white)
 ![MySQL](https://img.shields.io/badge/MySQL-Database-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-ES6-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
-![CSS3](https://img.shields.io/badge/CSS3-Design-1572B6?style=for-the-badge&logo=css3&logoColor=white)
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
 ![Status](https://img.shields.io/badge/Status-In_Development-2563EB?style=for-the-badge)
+
+[Overview](#overview) • [Screenshots](#screenshots) • [Features](#features) • [Installation](#installation) • [Roadmap](#roadmap)
 
 </div>
 
@@ -19,67 +22,89 @@ A modern online auction marketplace designed for Zambia.
 
 ## Overview
 
-Auctify is a full-stack online auction marketplace that connects buyers and sellers through competitive bidding.
+Auctify is a full-stack digital auction marketplace that connects buyers and sellers through competitive online bidding.
 
-The platform combines a modern animated interface with PHP backend functionality and MySQL database management to deliver an intuitive auction experience.
+Developed with a focus on usability, functionality and modern design, Auctify combines a responsive, animated frontend with a PHP backend and a relational MySQL database.
 
-Built with the Zambian market in mind, Auctify uses Zambian Kwacha (ZMW) as its default currency.
+The platform is designed with the Zambian market in mind, using Zambian Kwacha (ZMW) as its default currency.
+
+---
 
 ## Screenshots
 
 ### Homepage
 
-![Homepage](screenshots/homepage.png)
+A modern marketplace interface for discovering and browsing available auctions.
 
-### Auction Details
+![Auctify Homepage](screenshots/homepage.png)
 
-![Auction Details](screenshots/auction.png)
+### About Auctify
 
-### Login and Registration
+An introduction to the platform, its purpose and vision.
 
-![Login](screenshots/login.png)
+![About Auctify](screenshots/about.png)
 
-![Registration](screenshots/register.png)
+### User Authentication
+
+| Login | Registration |
+|---|---|
+| ![Login](screenshots/login.png) | ![Registration](screenshots/register.png) |
 
 ### Create an Auction
+
+Users can publish auction listings, upload product images, set starting prices and specify auction deadlines.
 
 ![Create Auction](screenshots/create-auction.png)
 
 ### My Bids Dashboard
 
-![My Bids](screenshots/my-bids.png)
+A dedicated dashboard for users to view their bidding activity.
+
+![My Bids Dashboard](screenshots/my-bids.png)
 
 ---
 
 ## Features
 
-### Marketplace
+### Auction Marketplace
 
-- Browse active auctions
-- Search available listings
-- Competitive bidding
-- Live auction countdowns
+- Browse available auctions
+- Search auction listings
+- Create and publish auctions
+- Competitive bidding system
+- Live auction countdown timers
 - Product image uploads
-- Automatic rejection of expired bids
-- Zambian Kwacha pricing
+- Automatic rejection of bids after auction expiry
+- Zambian Kwacha (ZMW) pricing
 
-### User Accounts
+### User Management
 
 - User registration
 - User authentication
+- Password hashing
+- Session-based authentication
 - Personal bidding dashboard
-- Auction creation
-- Bid management
+- User logout functionality
 
-### User Interface
+### User Experience
 
-- Custom Auctify branding
-- Animated page transitions and entrance effects
-- Interactive hover effects
+- Custom Auctify branding and logo
+- Modern blue colour palette
+- Responsive website layout
+- Smooth entrance animations
 - Animated auction cards
-- Responsive layouts
+- Interactive hover effects
 - Mobile-friendly interface
-- Custom typography and colour palette
+- Custom browser favicon
+
+### Backend and Database
+
+- PHP server-side application logic
+- MySQL relational database
+- Server-side bid validation
+- Auction expiry validation
+- Transaction-based bidding
+- Product image upload validation
 
 ---
 
@@ -87,18 +112,24 @@ Built with the Zambian market in mind, Auctify uses Zambian Kwacha (ZMW) as its 
 
 | Technology | Purpose |
 |---|---|
-| HTML5 | Website structure |
-| CSS3 | Styling and animations |
+| HTML5 | Application structure |
+| CSS3 | Styling, layouts and animations |
 | JavaScript | Client-side interactions |
-| PHP | Backend application logic |
-| MySQL | Database management |
+| PHP 8.2 | Backend application logic |
+| MySQL | Relational database |
+| MySQL Workbench | Database administration |
+| XAMPP | Local PHP development |
 | Git | Version control |
 | GitHub | Source code management |
-| XAMPP | Local development environment |
+| Visual Studio Code | Development environment |
+
+---
 
 ## Brand Identity
 
-| Colour | HEX |
+Auctify's visual identity is built around a modern blue colour palette, reflecting trust, professionalism and digital accessibility.
+
+| Colour | HEX Code |
 |---|---|
 | Midnight Blue | `#081C3B` |
 | Royal Blue | `#2563EB` |
@@ -106,18 +137,84 @@ Built with the Zambian market in mind, Auctify uses Zambian Kwacha (ZMW) as its 
 | Ice Blue | `#EFF6FF` |
 | White | `#FFFFFF` |
 
-The visual identity reflects trust, simplicity and modern digital commerce.
+**Brand name:** Auctify
+
+**Tagline:** Discover. Bid. Win.
 
 ---
 
-## Getting Started
+## System Architecture
+
+```mermaid
+flowchart TD
+    A[User Browser] --> B[Frontend Interface]
+    B --> C[PHP Application]
+    C --> D[Authentication]
+    C --> E[Auction Management]
+    C --> F[Bidding System]
+    D --> G[(MySQL Database)]
+    E --> G
+    F --> G
+```
+
+The application uses a client-server architecture, with PHP handling application logic and MySQL managing persistent data.
+
+---
+
+## Database Architecture
+
+The application uses three primary relational database tables.
+
+| Table | Description |
+|---|---|
+| `users` | Stores registered user accounts |
+| `auctions` | Stores auction listings, prices and deadlines |
+| `bids` | Stores individual bidding transactions |
+
+```mermaid
+erDiagram
+    USERS ||--o{ BIDS : places
+    AUCTIONS ||--o{ BIDS : receives
+
+    USERS {
+        int id PK
+        varchar username
+        varchar email
+        varchar password
+    }
+
+    AUCTIONS {
+        int id PK
+        varchar title
+        text description
+        decimal starting_price
+        decimal current_price
+        datetime end_time
+        varchar image
+    }
+
+    BIDS {
+        int id PK
+        int auction_id FK
+        int user_id FK
+        decimal amount
+        datetime created_at
+    }
+```
+
+---
+
+## Installation
 
 ### Prerequisites
 
-- PHP 8.2 or compatible version
+Ensure the following software is installed:
+
+- PHP 8.2 or a compatible version
 - MySQL Server
 - MySQL Workbench or phpMyAdmin
 - Git
+- Visual Studio Code (optional)
 
 ### 1. Clone the repository
 
@@ -126,95 +223,120 @@ git clone https://github.com/nancymunkombwe/auction-system.git
 cd auction-system
 ```
 
-### 2. Configure the database
+### 2. Create the database
 
-Create a MySQL database named:
+Open MySQL Workbench and execute:
 
 ```sql
 CREATE DATABASE IF NOT EXISTS auction_system;
-```
+USE auction_system;
 
-Import or create the required database tables.
+CREATE TABLE IF NOT EXISTS users (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(100) NOT NULL UNIQUE,
+    email VARCHAR(254) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS auctions (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
+    starting_price DECIMAL(15,2) NOT NULL,
+    current_price DECIMAL(15,2) NOT NULL,
+    end_time DATETIME NOT NULL,
+    image VARCHAR(255),
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS bids (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    auction_id INT UNSIGNED NOT NULL,
+    user_id INT UNSIGNED NOT NULL,
+    amount DECIMAL(15,2) NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (auction_id) REFERENCES auctions(id),
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+```
 
 ### 3. Configure the database connection
 
-Create or configure `includes/db.php` using your local database credentials.
+Create or configure `includes/db.php` using your local MySQL credentials.
 
-| Setting | Local configuration |
-|---|---|
-| Host | localhost |
-| Database | auction_system |
-| Port | 3307 |
-| Username | Your MySQL username |
-| Password | Your MySQL password |
+```php
+<?php
 
-The port may differ depending on your MySQL installation.
+date_default_timezone_set("Africa/Lusaka");
 
-Never commit real database credentials to version control.
+$servername = "localhost";
+$username = "root";
+$password = "YOUR_MYSQL_PASSWORD";
+$dbname = "auction_system";
+$port = 3307;
+
+$conn = new mysqli(
+    $servername,
+    $username,
+    $password,
+    $dbname,
+    $port
+);
+
+if ($conn->connect_error) {
+    die("Database connection failed.");
+}
+
+$conn->set_charset("utf8mb4");
+$conn->query("SET time_zone = '+02:00'");
+```
+
+Update the password and port according to your MySQL configuration.
+
+**Security notice:** Never commit real database credentials to GitHub.
 
 ### 4. Start the application
+
+Using PHP:
 
 ```bash
 php -S localhost:8000
 ```
 
-Alternatively, for Windows users with XAMPP:
+For Windows users running PHP through XAMPP:
 
 ```powershell
 C:\xampp\php\php.exe -S localhost:8000
 ```
 
-### 5. Open the website
+### 5. Access Auctify
 
-Visit:
+Open the following address in your browser:
 
+```
 http://localhost:8000
+```
+
+Ensure your MySQL server is running before launching the application.
 
 ---
 
-## Database Architecture
+## How It Works
 
-Auctify uses a relational MySQL database.
-
-| Table | Purpose |
-|---|---|
-| users | Stores registered user accounts |
-| auctions | Stores auction listings and pricing |
-| bids | Stores user bidding records |
-
-The database manages relationships between users, auctions and bids.
+1. A user creates an account.
+2. The user logs into the marketplace.
+3. A seller creates an auction listing.
+4. Buyers browse available auctions.
+5. Buyers submit competitive bids.
+6. The highest accepted bid updates the auction price.
+7. The auction closes when its deadline is reached.
 
 ---
 
-## Development Roadmap
+## Supported Auction Categories
 
-- [x] Marketplace interface
-- [x] User registration
-- [x] User authentication
-- [x] Auction creation
-- [x] Bidding functionality
-- [x] MySQL integration
-- [x] Product image uploads
-- [x] Custom brand identity
-- [x] UI animations
-- [x] Responsive design
-- [ ] Real-time multi-user bidding
-- [ ] Watchlist functionality
-- [ ] Email notifications
-- [ ] User verification
-- [ ] Administrator dashboard
-- [ ] Mobile money integration
-- [ ] Automated payment processing
-- [ ] Cloud deployment
-- [ ] Production security testing
-
----
-
-## Project Vision
-
-Auctify aims to become a modern digital auction platform that simplifies buying and selling across Zambia.
-
-Potential auction categories include:
+Auctify is designed to accommodate a wide range of products and assets, including:
 
 - Vehicles
 - Electronics
@@ -223,6 +345,64 @@ Potential auction categories include:
 - Furniture
 - Industrial equipment
 - Business assets
+- Collectibles
+- General merchandise
+
+---
+
+## Roadmap
+
+### Phase 1 — Core Development
+
+- [x] Marketplace interface
+- [x] User registration and login
+- [x] MySQL database integration
+- [x] Auction creation
+- [x] Bidding functionality
+- [x] Product image uploads
+- [x] Auction countdown timers
+- [x] Personal bidding dashboard
+
+### Phase 2 — Design and Branding
+
+- [x] Custom Auctify logo
+- [x] Blue visual identity
+- [x] Animated user interface
+- [x] Responsive design
+- [x] Browser favicon
+- [x] Project documentation
+
+### Phase 3 — Platform Expansion
+
+- [ ] Real-time bidding updates
+- [ ] User profiles
+- [ ] Watchlist functionality
+- [ ] Auction categories and advanced filtering
+- [ ] Email notifications
+- [ ] Outbid notifications
+- [ ] Seller ratings and reviews
+- [ ] Reserve prices
+- [ ] Administrator dashboard
+- [ ] User identity verification
+
+### Phase 4 — Commercial Deployment
+
+- [ ] Cloud hosting
+- [ ] Custom domain
+- [ ] Mobile money integration
+- [ ] Payment processing
+- [ ] Automated auction settlements
+- [ ] Fraud prevention
+- [ ] Production security testing
+- [ ] Public marketplace launch
+
+---
+
+## Project Vision
+
+Auctify aims to modernise the auction experience in Zambia by creating an accessible digital marketplace for individuals, businesses and organisations.
+
+The long-term vision is to support private sellers, vehicle dealerships, financial institutions, agricultural businesses and corporate asset auctions through a unified online platform.
 
 ---
 
@@ -230,13 +410,21 @@ Potential auction categories include:
 
 Auctify is currently under active development.
 
-The application is intended for local development and demonstration purposes. Production deployment and payment integrations are planned for future releases.
+The current release is intended for local development, demonstration and portfolio purposes. Cloud deployment, payment integrations and additional security testing are planned for future releases.
+
+---
+
+## Developer
+
+**Nancy Munkombwe**
+
+[GitHub Profile](https://github.com/nancymunkombwe)
 
 ---
 
 <div align="center">
 
-## AUCTIFY
+# AUCTIFY
 
 **Discover. Bid. Win.**
 
