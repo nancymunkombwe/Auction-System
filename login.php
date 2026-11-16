@@ -1,5 +1,6 @@
 <?php
 session_start();
+require 'includes/security.php';
 include 'includes/db.php';
 
 // If user is already logged in, redirect to homepage
@@ -12,6 +13,7 @@ $error = '';
 
 // Handle login form submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    csrf_check();
     $username = trim($_POST['username']);
     $password = trim($_POST['password']);
 
@@ -27,32 +29,34 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Check password
         if (password_verify($password, $user['password'])) {
             // Login success
+            session_regenerate_id(true);
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['username'] = $user['username'];
             header("Location: index.php");
             exit();
         } else {
-            $error = "Incorrect password.";
+            $error = "Invalid username or password.";
         }
     } else {
-        $error = "Username not found.";
+        $error = "Invalid username or password.";
     }
 }
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="UTF-8">
     <title>Login - Auctify</title>
     <link rel="stylesheet" href="assets/css/style.css">
-</head>
+<link rel="icon" type="image/svg+xml" href="assets/images/auctify-mark.svg"></head>
 <body>
 
 <?php include 'includes/header.php'; ?>
 
 <section class="auth-page">
     <!-- Logo -->
-    <img src="assets/images/logo.png" alt="Auctify Logo" style="width:100px; margin-bottom:20px;">
+    <div class="brand auth-brand"><img class="brand-mark" src="assets/images/auctify-mark.svg" alt=""><span class="wordmark">auctify<span>.</span></span></div>
 
     <h1>Welcome to Auctify</h1>
 
@@ -63,16 +67,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     <!-- Login form -->
     <form method="POST" action="login.php">
+<input type="hidden" name="csrf" value="<?= csrf_token() ?>">
         <input type="text" name="username" placeholder="Username" required>
         <input type="password" name="password" placeholder="Password" required>
         <button type="submit">Login</button>
     </form>
 
-    <p>Don't have an account? <a href="register.php" style="color:#f39c12;">Register here</a></p>
+    <p>Don't have an account? <a href="register.php" style="color:#2563eb;">Register here</a></p>
 </section>
 
 <footer>
-    <p>&copy; 2025 Auctify</p>
+    <p>&copy; 2026 Auctify</p>
 </footer>
 
 </body>

@@ -4,9 +4,10 @@ session_start();
 <!DOCTYPE html>
 <html>
 <head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Contact - Auctify</title>
     <link rel="stylesheet" href="assets/css/style.css">
-</head>
+<link rel="icon" type="image/svg+xml" href="assets/images/auctify-mark.svg"></head>
 <body>
 
 <?php include 'includes/header.php'; ?>
@@ -30,7 +31,7 @@ session_start();
 </div>
 
 <footer>
-    <p>&copy; 2025 Auctify</p>
+    <p>&copy; 2026 Auctify</p>
 </footer>
 
 <script>

@@ -1,5 +1,6 @@
 <?php
 session_start();
+require '../includes/security.php';
 include '../includes/db.php';
 
 if (!isset($_GET['id'])) {
@@ -35,9 +36,10 @@ $bids_result = $stmt_bids->get_result();
 <!DOCTYPE html>
 <html>
 <head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
     <title><?php echo htmlspecialchars($auction['title']); ?> - Auction</title>
     <link rel="stylesheet" href="../assets/css/style.css">
-</head>
+<link rel="icon" type="image/svg+xml" href="../assets/images/auctify-mark.svg"></head>
 <body>
 
 <?php include '../includes/header.php'; ?>
@@ -48,23 +50,23 @@ $bids_result = $stmt_bids->get_result();
 
     <div class="card">
         <?php if ($auction['image']) { ?>
-            <img src="../assets/images/<?php echo $auction['image']; ?>" alt="Auction Image">
+            <img src="../assets/images/<?= rawurlencode(basename($auction['image'])) ?>" alt="Auction Image">
         <?php } ?>
 
         <p><?php echo nl2br(htmlspecialchars($auction['description'])); ?></p>
 
-        <p><strong>Starting Price:</strong> $<?php echo $auction['starting_price']; ?></p>
-        <p><strong>Current Price:</strong> $<?php echo $auction['current_price']; ?></p>
+        <p><strong>Starting Price:</strong> K<?= htmlspecialchars((string)($auction['starting_price'] ?? 'Not recorded')) ?></p>
+        <p><strong>Current Price:</strong> K<?php echo $auction['current_price']; ?></p>
         <p><strong>Ends at:</strong> <?php echo $auction['end_time']; ?></p>
     </div>
 
-    <h2>Bids</h2>
+    <div class="countdown" data-end="<?= strtotime($auction['end_time']) ?>"></div><?php if(isset($_SESSION['flash'])): ?><p class="notice"><?= htmlspecialchars($_SESSION['flash']) ?></p><?php unset($_SESSION['flash']); endif; ?><h2>Bid history</h2>
     <div class="card">
         <?php
         if ($bids_result->num_rows > 0) {
             echo "<ul>";
             while ($bid = $bids_result->fetch_assoc()) {
-                echo "<li><strong>" . htmlspecialchars($bid['username']) . "</strong> bid $" . $bid['amount'] . " <br><small>(" . $bid['created_at'] . ")</small></li>";
+                echo "<li><strong>" . htmlspecialchars($bid['username']) . "</strong> bid K" . $bid['amount'] . " <br><small>(" . $bid['created_at'] . ")</small></li>";
             }
             echo "</ul>";
         } else {
@@ -73,12 +75,13 @@ $bids_result = $stmt_bids->get_result();
         ?>
     </div>
 
-    <?php if (isset($_SESSION['user_id'])) { ?>
+    <?php if (strtotime($auction['end_time']) <= time()) { ?><p class="notice">Auction ended.</p><?php } elseif (isset($_SESSION['user_id'])) { ?>
         <h2>Place a Bid</h2>
         <div class="card">
-            <form action="bid.php" method="post" class="contact-form">
+            <form action="bid.php" method="post" class="contact-form" data-bid-form>
+<input type="hidden" name="csrf" value="<?= csrf_token() ?>">
                 <input type="hidden" name="auction_id" value="<?php echo $auction_id; ?>">
-                <input type="text" name="bid_amount" placeholder="Your Bid">
+                <input type="number" step="0.01" min="<?= number_format($auction['current_price']+0.01,2,'.','') ?>" required name="bid_amount" placeholder="Your Bid">
                 <button class="btn" type="submit">Place Bid</button>
             </form>
         </div>
@@ -91,12 +94,12 @@ $bids_result = $stmt_bids->get_result();
 </div>
 
 <footer>
-    <p>&copy; 2025 Auctify</p>
+    <p>&copy; 2026 Auctify</p>
 </footer>
 
 <script>
 document.querySelector(".page-container").classList.add("loaded");
 </script>
 
-</body>
+<script src="../assets/js/countdown.js"></script></body>
 </html>
